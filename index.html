@@ -1,24 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+<head>
+  <meta charset="utf-8" />
+  <title>Trigger Genesys Workflow</title>
+</head>
 <body>
+  <h1>Run Genesys Workflow</h1>
+  <button id="run">Run Workflow</button>
 
-<h1>WebChatTest</h1>
-<p>Test</p>
+  <script>
+    const WEBHOOK_URL = "dddddddddddddddd";
 
-<script type="text/javascript" charset="utf-8">
-  (function (g, e, n, es, ys) {
-    g['_genesysJs'] = e;
-    g[e] = g[e] || function () {
-      (g[e].q = g[e].q || []).push(arguments)
-    };
-    g[e].t = 1 * new Date();
-    g[e].c = es;
-    ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
-  })(window, 'Genesys', 'https://apps.mypurecloud.ie/genesys-bootstrap/genesys.min.js', {
-    environment: 'euw1',
-    deploymentId: '87213392-c4c9-443a-92a3-9c61e6a3dc45'
-  });
-</script>
+    const params = new URLSearchParams(window.location.search);
+    const customerId = params.get("customerId") || "";
 
+    document.getElementById("run").addEventListener("click", async () => {
+      const payload = {
+        someKey: "start-workflow",
+        customerId: customerId,
+        source: "simple-webpage"
+      };
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        alert(res.ok ? "Webhook sent" : "Failed to send webhook");
+      } catch (err) {
+        alert("Failed to send webhook");
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>
